@@ -41,11 +41,13 @@
 //
 #define PW_DET                              PC5   // Y+
 #define PW_OFF                              PB12  // Z+
+#define MT_DET_1_PIN                      PW_DET
+#define MT_DET_2_PIN                      PW_OFF
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN                    PC5   // Y+
+  #define FIL_RUNOUT_PIN            MT_DET_1_PIN
 #endif
 #ifndef FIL_RUNOUT2_PIN
-  #define FIL_RUNOUT2_PIN                   PB12  // Z+
+  #define FIL_RUNOUT2_PIN           MT_DET_2_PIN
 #endif
 
 #include "pins_MKS_MONSTER8_common.h"

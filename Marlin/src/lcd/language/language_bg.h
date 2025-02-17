@@ -139,12 +139,7 @@ namespace LanguageNarrow_bg {
   LSTR MSG_AUTORETRACT                    = _UxGT("Автоoткат");
   LSTR MSG_FILAMENTCHANGE                 = _UxGT("Смяна нишка");
   LSTR MSG_FILAMENTCHANGE_E               = _UxGT("Смяна нишка *");
-  #if HAS_MULTI_VOLUME
-    LSTR MSG_ATTACH_SD_MEDIA              = _UxGT("Иниц. SD-Карта");
-    LSTR MSG_ATTACH_USB_MEDIA             = _UxGT("Иниц. USB-Карта");
-  #else
-    LSTR MSG_ATTACH_MEDIA                 = _UxGT("Иниц. SD-Карта");
-  #endif
+  LSTR MSG_ATTACH_MEDIA                   = _UxGT("Иниц. SD-Карта");
   LSTR MSG_CHANGE_MEDIA                   = _UxGT("Смяна SD-Карта");
   LSTR MSG_ZPROBE_OUT                     = _UxGT("Z-сондата е извадена");
   LSTR MSG_ZPROBE_XOFFSET                 = _UxGT("X Отстояние");

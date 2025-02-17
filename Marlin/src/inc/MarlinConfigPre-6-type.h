@@ -26,6 +26,5 @@
 
 #ifndef __MARLIN_DEPS__
   #include HAL_PATH(.., inc/Conditionals_post.h)
+  #include "../core/types.h"  // Ahead of sanity-checks
 #endif
-
-#include "../core/types.h"  // Ahead of sanity-checks

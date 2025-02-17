@@ -419,7 +419,7 @@ void menu_move() {
 
     bool show_state = c.active;
     EDIT_ITEM(bool, MSG_FIXED_TIME_MOTION, &show_state, []{
-      FLIP(ftMotion.cfg.active);
+      ftMotion.cfg.active ^= true;
       ftMotion.update_shaping_params();
     });
 

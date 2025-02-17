@@ -78,7 +78,7 @@ public:
   static void handleFeedRateMinChange(DGUS_VP_Variable &var, void *val_ptr);
   static void handleMin_T_F(DGUS_VP_Variable &var, void *val_ptr);
 
-  #if ENABLED(DGUS_FILAMENT_LOADUNLOAD)
+  #if HAS_PID_HEATING
     static void filamentLoadUnload(DGUS_VP_Variable &var, void *val_ptr, const int filamentDir);
     static void filamentLoad(DGUS_VP_Variable &var, void *val_ptr);
     static void filamentUnload(DGUS_VP_Variable &var, void *val_ptr);

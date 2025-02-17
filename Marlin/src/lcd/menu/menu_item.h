@@ -191,7 +191,7 @@ class MenuItem_bool : public MenuEditItemBase {
       draw(sel, row, fstr, pget());
     }
     static void action(FSTR_P const fstr, bool * const ptr, const screenFunc_t callbackFunc=nullptr) {
-      FLIP(*ptr); ui.refresh();
+      *ptr ^= true; ui.refresh();
       if (callbackFunc) (*callbackFunc)();
     }
 };

@@ -1252,7 +1252,7 @@ void RTS::handleData() {
           setTouchScreenConfiguration();
           break;
         case 21:
-          FLIP(dwin_settings.display_standby);
+          dwin_settings.display_standby ^= true;
           setTouchScreenConfiguration();
           break;
         case 22:

@@ -52,9 +52,7 @@ void lcd_moveto(const lcd_uint_t col, const lcd_uint_t row) {
 inline void lcd_advance_cursor(const uint8_t len=1) { cursor.x += len * dwin_font.width; }
 
 void lcd_put_int(const int i) {
-  char buf[12]; // 10 digits + sign + null
-  itoa(i, buf, 10);
-  lcd_put_u8str_max(buf, PIXEL_LEN_NOLIMIT);
+  // TODO: Draw an int at the cursor position, advance the cursor
 }
 
 int lcd_put_dwin_string() {

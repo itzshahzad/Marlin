@@ -1342,7 +1342,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, probe_deployed);
             }
             else {
-              FLIP(probe_deployed);
+              probe_deployed ^= true;
               probe.set_deployed(probe_deployed);
               drawCheckbox(row, probe_deployed);
             }
@@ -1355,7 +1355,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
             drawCheckbox(row, livemove);
           }
           else {
-            FLIP(livemove);
+            livemove ^= true;
             drawCheckbox(row, livemove);
           }
           break;
@@ -1400,7 +1400,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, use_probe);
             }
             else {
-              FLIP(use_probe);
+              use_probe ^= true;
               drawCheckbox(row, use_probe);
               if (use_probe) {
                 popupHandler(Popup_Level);
@@ -1616,7 +1616,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
                 planner.synchronize();
                 redrawMenu();
               }
-              FLIP(liveadjust);
+              liveadjust ^= true;
               drawCheckbox(row, liveadjust);
             }
             break;
@@ -2719,7 +2719,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
             drawCheckbox(row, eeprom_settings.time_format_textual);
           }
           else {
-            FLIP(eeprom_settings.time_format_textual);
+            eeprom_settings.time_format_textual ^= true;
             drawCheckbox(row, eeprom_settings.time_format_textual);
           }
           break;
@@ -2877,7 +2877,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, ui.sound_on);
             }
             else {
-              FLIP(ui.sound_on);
+              ui.sound_on ^= true;
               drawCheckbox(row, ui.sound_on);
             }
             break;
@@ -2960,7 +2960,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, runout.enabled);
             }
             else {
-              FLIP(runout.enabled);
+              runout.enabled ^= true;
               drawCheckbox(row, runout.enabled);
             }
             break;
@@ -3403,7 +3403,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, mesh_conf.viewer_print_value);
             }
             else {
-              FLIP(mesh_conf.viewer_print_value);
+              mesh_conf.viewer_print_value ^= true;
               drawCheckbox(row, mesh_conf.viewer_print_value);
             }
             break;
@@ -3413,7 +3413,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, mesh_conf.viewer_asymmetric_range);
             }
             else {
-              FLIP(mesh_conf.viewer_asymmetric_range);
+              mesh_conf.viewer_asymmetric_range ^= true;
               drawCheckbox(row, mesh_conf.viewer_asymmetric_range);
             }
             break;
@@ -3596,7 +3596,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, mesh_conf.goto_mesh_value);
             }
             else {
-              FLIP(mesh_conf.goto_mesh_value);
+              mesh_conf.goto_mesh_value ^= true;
               current_position.z = 0;
               mesh_conf.manual_mesh_move(true);
               drawCheckbox(row, mesh_conf.goto_mesh_value);
@@ -3957,7 +3957,7 @@ void JyersDWIN::menuItemHandler(const uint8_t menu, const uint8_t item, bool dra
               drawCheckbox(row, runout.enabled);
             }
             else {
-              FLIP(runout.enabled);
+              runout.enabled ^= true;
               drawCheckbox(row, runout.enabled);
             }
             break;

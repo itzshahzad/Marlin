@@ -180,8 +180,6 @@ template <class L, class R> struct IF<true, L, R> { typedef L type; };
 #define uvalue_t(V) typename IF<((V)>65535), uint32_t, typename IF<((V)>255), uint16_t, uint8_t>::type>::type
 #define value_t(V)  typename IF<((V)>32767),  int32_t, typename IF<((V)>127),  int16_t,  int8_t>::type>::type
 
-class BitProxy;
-
 // Define a template for a bit field of N bits, using the smallest type that can hold N bits
 template<size_t N, bool UseArray = (N > 64)>
 struct Flags;
@@ -348,7 +346,7 @@ enum AxisEnum : uint8_t {
 #define LOOP_DISTINCT_E(VAR) for (uint8_t VAR = 0; VAR < DISTINCT_E; ++VAR)
 
 //
-// feedRate_t is just a humble float that can represent mm/s or mm/min
+// feedRate_t is just a humble float
 //
 typedef float feedRate_t;
 
@@ -1019,6 +1017,8 @@ struct XYZEarray {
 
   FI XYZEval<T> operator[](const int n) const { return XYZval<T>(LOGICAL_AXIS_ARRAY(e[n], x[n], y[n], z[n], i[n], j[n], k[n], u[n], v[n], w[n])); }
 };
+
+class AxisBits;
 
 class AxisBits {
 public:

@@ -1309,16 +1309,12 @@ void do_blocking_move_to(const xyze_pos_t &raw, const_feedRate_t fr_mm_s/*=0.0f*
   void do_move_after_z_homing() {
     DEBUG_SECTION(mzah, "do_move_after_z_homing", DEBUGGING(LEVELING));
     #ifdef Z_POST_CLEARANCE
-      do_z_clearance(
-        Z_POST_CLEARANCE,
-        ALL(HOMING_Z_WITH_PROBE, HAS_STOWABLE_PROBE) && TERN0(HAS_BED_PROBE, endstops.z_probe_enabled),
-        true
-      );
+      do_z_clearance(Z_POST_CLEARANCE, true, true);
     #elif ENABLED(USE_PROBE_FOR_Z_HOMING)
       probe.move_z_after_probing();
     #endif
   }
-#endif // HAS_Z_AXIS
+#endif
 
 #if HAS_I_AXIS
   void do_blocking_move_to_xyz_i(const xyze_pos_t &raw, const_float_t i, const_feedRate_t fr_mm_s/*=0.0f*/) {
@@ -2685,10 +2681,12 @@ void prepare_line_to_destination() {
 
     //
     // Homing Z with a probe? Raise Z (maybe) and deploy the Z probe.
-    // Return early if probe deployment fails.
     //
     #if HOMING_Z_WITH_PROBE
-      if (axis == Z_AXIS && probe.deploy()) { probe.stow(); return; }
+      if (axis == Z_AXIS && probe.deploy()) {
+        probe.stow();
+        return;
+      }
     #endif
 
     // Set flags for X, Y, Z motor locking
@@ -2707,17 +2705,16 @@ void prepare_line_to_destination() {
     //
     #if HOMING_Z_WITH_PROBE
       if (axis == Z_AXIS) {
-
         #if ENABLED(BLTOUCH)
-          // BLTouch was deployed above, but get the alarm state.
-          // Stow and return early if there is a deploy alarm.
-          if (bltouch.deploy()) { bltouch.stow(); return; }
+          if (bltouch.deploy()) {  // BLTouch was deployed above, but get the alarm state.
+            bltouch.stow();
+            return;
+          }
         #endif
-
-        // Tare the probe. Stow and return early if it fails
-        if (TERN0(PROBE_TARE, probe.tare())) { probe.stow(); return; }
-
-        // Tell the Bed Distance Sensor we're Z homing
+        if (TERN0(PROBE_TARE, probe.tare())) {
+          probe.stow();
+          return;
+        }
         TERN_(BD_SENSOR, bdl.config_state = BDS_HOMING_Z);
       }
     #endif
@@ -2990,7 +2987,7 @@ void prepare_line_to_destination() {
       if (axis == Z_AXIS) bdl.config_state = BDS_IDLE;
     #endif
 
-    // Put away the Z probe. Return early if it fails.
+    // Put away the Z probe
     if (TERN0(HOMING_Z_WITH_PROBE, axis == Z_AXIS && probe.stow())) return;
 
     #if DISABLED(DELTA) && defined(HOMING_BACKOFF_POST_MM)
