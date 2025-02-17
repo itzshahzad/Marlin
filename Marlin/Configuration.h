@@ -61,18 +61,18 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Original author or contributor.
+#define STRING_CONFIG_H_AUTHOR "(SKR_PROV 1.2, MakerArm)" // Original author or contributor.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 // @section machine
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_14_EFB
+  #define MOTHERBOARD BOARD_BTT_SKR_PRO_V1_2 //#define MOTHERBOARD BOARD_RAMPS_14_EFB
 #endif
 
 // @section serial
-
+#define SPINDLE_LASER_PWM_PIN 9
 /**
  * Select the serial port on the board to use for communication with the host.
  * This allows the connection of wireless adapters (for instance) to non-default port pins.
@@ -81,7 +81,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
  */
-#define SERIAL_PORT 0
+#define SERIAL_PORT 3
 
 /**
  * Serial Port Baud Rate
@@ -94,7 +94,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 
 //#define BAUD_RATE_GCODE     // Enable G-code M575 to set the baud rate
 
@@ -151,9 +151,9 @@
  *          TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  A4988
-#define Y_DRIVER_TYPE  A4988
-#define Z_DRIVER_TYPE  A4988
+#define X_DRIVER_TYPE  TMC2208 //TMC2208
+#define Y_DRIVER_TYPE  TMC2208 //TMC2208
+#define Z_DRIVER_TYPE  TMC2208 //TMC2208
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
@@ -165,7 +165,7 @@
 //#define U_DRIVER_TYPE  A4988
 //#define V_DRIVER_TYPE  A4988
 //#define W_DRIVER_TYPE  A4988
-#define E0_DRIVER_TYPE A4988
+#define E0_DRIVER_TYPE TMC2208 // A4988
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -1054,19 +1054,19 @@
  *   https://www.thingiverse.com/thing:1241491
  */
 //#define MORGAN_SCARA
-//#define MP_SCARA
+#define MP_SCARA  //jjy
 #if ANY(MORGAN_SCARA, MP_SCARA)
   // If movement is choppy try lowering this value
-  #define DEFAULT_SEGMENTS_PER_SECOND 200
-
+  #define DEFAULT_SEGMENTS_PER_SECOND 100
+  #define DEBUG_SCARA_KINEMATICS //jjy was in morgan
   // Length of inner and outer support arms. Measure arm lengths precisely.
-  #define SCARA_LINKAGE_1 150       // (mm)
-  #define SCARA_LINKAGE_2 150       // (mm)
+  #define SCARA_LINKAGE_1 200  // jjy  150       // (mm)
+  #define SCARA_LINKAGE_2 200  // jjy  150       // (mm)
 
   // SCARA tower offset (position of Tower relative to bed zero position)
   // This needs to be reasonably accurate as it defines the printbed position in the SCARA space.
-  #define SCARA_OFFSET_X  100       // (mm)
-  #define SCARA_OFFSET_Y  -56       // (mm)
+  #define SCARA_OFFSET_X 0// 100       // (mm)
+  #define SCARA_OFFSET_Y 0// -56       // (mm)
 
   #if ENABLED(MORGAN_SCARA)
 
@@ -1222,12 +1222,12 @@
  * Endstop "Hit" State
  * Set to the state (HIGH or LOW) that applies to each endstop.
  */
-#define X_MIN_ENDSTOP_HIT_STATE HIGH
+#define X_MIN_ENDSTOP_HIT_STATE LOW
 #define X_MAX_ENDSTOP_HIT_STATE HIGH
-#define Y_MIN_ENDSTOP_HIT_STATE HIGH
+#define Y_MIN_ENDSTOP_HIT_STATE LOW
 #define Y_MAX_ENDSTOP_HIT_STATE HIGH
-#define Z_MIN_ENDSTOP_HIT_STATE HIGH
-#define Z_MAX_ENDSTOP_HIT_STATE HIGH
+#define Z_MIN_ENDSTOP_HIT_STATE LOW
+#define Z_MAX_ENDSTOP_HIT_STATE LOW
 #define I_MIN_ENDSTOP_HIT_STATE HIGH
 #define I_MAX_ENDSTOP_HIT_STATE HIGH
 #define J_MIN_ENDSTOP_HIT_STATE HIGH
@@ -1244,7 +1244,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-//#define ENDSTOP_INTERRUPTS_FEATURE
+// #define ENDSTOP_INTERRUPTS_FEATURE
 
 /**
  * Endstop Noise Threshold
@@ -1288,7 +1288,41 @@
  * Override with M92 (when enabled below)
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 500 }
+
+//Old makerarm calcs below JJY
+  #define A_NEMA_FULLSTEPS 200    // 1.8 degree steps
+  #define B_NEMA_FULLSTEPS 200
+  #define Z_NEMA_FULLSTEPS 200
+  #define E_NEMA_FULLSTEPS 200
+  #define S_NEMA_FULLSTEPS 200
+
+  #define A_MICROSTEPPING   8    // DRV8825 with jumpers: 011
+  #define B_MICROSTEPPING   8    // DRV8825 with jumpers: 011
+  #define A_HDRIVE_RATIO    50    // Harmonic drive @ 50:1
+  #define B_HDRIVE_RATIO    50    // Harmonic drive @ 50:1
+
+  // Z Stepper
+  #define Z_MICROSTEPPING    8    // DRV8825 with jumpers: 011
+  #define Z_ROD_PITCH        4    // 3mm pitch leadscrew
+
+  // E Stepper
+  #define E_MICROSTEPPING    8     // DRV8825 with jumpers: 011
+  #define E_GEARBOX_RATIO    3     // Direct drive
+  #define E_GEAR_DIAMETER   6.44 // Calibrated 2017-06-28
+
+  // Spindle
+  #define S_MICROSTEPPING    8
+  #define S_STEPS_PER_DEGREE (1.0 * S_NEMA_FULLSTEPS * S_MICROSTEPPING / 360.0)
+
+
+  #define MAKERARM_MAX_Z   237.5
+// Calculated steps
+#define A_STEPS_PER_DEGREE (1.0 * A_NEMA_FULLSTEPS * A_MICROSTEPPING * A_HDRIVE_RATIO / 360.0)
+#define B_STEPS_PER_DEGREE (1.0 * B_NEMA_FULLSTEPS * B_MICROSTEPPING * B_HDRIVE_RATIO / 360.0)
+#define Z_STEPS_PER_MM     (1.0 * Z_NEMA_FULLSTEPS * Z_MICROSTEPPING / Z_ROD_PITCH)
+#define E_STEPS_PER_MM     (1.0 * E_NEMA_FULLSTEPS * E_MICROSTEPPING * E_GEARBOX_RATIO / (E_GEAR_DIAMETER * M_PI))
+
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { A_STEPS_PER_DEGREE, B_STEPS_PER_DEGREE, Z_STEPS_PER_MM, E_STEPS_PER_MM }  //jjy , S_STEPS_PER_DEGREE } //jjy { 80, 80, 400, 500 }
 
 /**
  * Enable support for M92. Disable to save at least ~530 bytes of flash.
@@ -1300,7 +1334,7 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE {40, 50, 30, 25} // { 14.327, 28.653, 15, 25 } //jjy, 100 } //jjy { 300, 300, 5, 25 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1313,7 +1347,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION {500, 500, 500, 5000} // { 150, 160, 100, 5000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1328,9 +1362,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION           75   //jjy 3000    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION   3000 //jjy 3000    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION    100  //jjy 3000    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -1340,11 +1374,11 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-//#define CLASSIC_JERK
+#define CLASSIC_JERK   //jjy
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 10.0
-  #define DEFAULT_YJERK 10.0
-  #define DEFAULT_ZJERK  0.3
+  #define DEFAULT_XJERK 1.433 // jjy 10.0
+  #define DEFAULT_YJERK 2.865 //10.0
+  #define DEFAULT_ZJERK  0.4 //0.3
   #define DEFAULT_EJERK  5.0
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
@@ -1806,9 +1840,9 @@
 // @section motion
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+#define INVERT_X_DIR true  //jjy false
+#define INVERT_Y_DIR false //jjy true
+#define INVERT_Z_DIR true //jjy false
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1850,9 +1884,9 @@
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
-#define X_HOME_DIR -1
-#define Y_HOME_DIR -1
-#define Z_HOME_DIR -1
+#define X_HOME_DIR 1 //jjy -1
+#define Y_HOME_DIR 1 //jjy -1
+#define Z_HOME_DIR 1 //jjy -1
 //#define I_HOME_DIR -1
 //#define J_HOME_DIR -1
 //#define K_HOME_DIR -1
@@ -1878,16 +1912,17 @@
 // @section geometry
 
 // The size of the printable area
-#define X_BED_SIZE 200
-#define Y_BED_SIZE 200
+#define X_BED_SIZE 800
+#define Y_BED_SIZE 400
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
+// Travel limits (mm) after homing, corresponding to endstop positions.
+#define X_MIN_POS -(SCARA_LINKAGE_1 + SCARA_LINKAGE_2)
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 200
+#define X_MAX_POS (SCARA_LINKAGE_1 + SCARA_LINKAGE_2)
+#define Y_MAX_POS (SCARA_LINKAGE_1 + SCARA_LINKAGE_2)
+#define Z_MAX_POS MAKERARM_MAX_Z
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
