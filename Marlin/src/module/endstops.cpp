@@ -413,8 +413,40 @@ void Endstops::event_handler() {
   #pragma GCC diagnostic pop
 
 #endif
+  void report_endstop_pins()
+  {
+    // Check the status of X endstop
+    if (digitalRead(X_MIN_PIN) == LOW)
+    {
+      SERIAL_ECHOLNPGM("X Endstop Triggered");
+    }
+    else
+    {
+      SERIAL_ECHOLNPGM("X Endstop Open");
+    }
 
+    // Check the status of Y endstop
+    if (digitalRead(Y_MIN_PIN) == LOW)
+    {
+      SERIAL_ECHOLNPGM("Y Endstop Triggered");
+    }
+    else
+    {
+      SERIAL_ECHOLNPGM("Y Endstop Open");
+    }
+
+    // Check the status of Z endstop
+    if (digitalRead(Z_MIN_PIN) == LOW)
+    {
+      SERIAL_ECHOLNPGM("Z Endstop Triggered");
+    }
+    else
+    {
+      SERIAL_ECHOLNPGM("Z Endstop Open");
+    }
+  }
 void __O2 Endstops::report_states() {
+  //report_endstop_pins();
   TERN_(BLTOUCH, bltouch._set_SW_mode());
   SERIAL_ECHOLNPGM(STR_M119_REPORT);
   #define ES_REPORT(S) print_es_state(READ_ENDSTOP(S##_PIN) == S##_ENDSTOP_HIT_STATE, F(STR_##S))
@@ -1386,3 +1418,18 @@ void Endstops::update() {
   }
 
 #endif // PINS_DEBUGGING
+  void custom_homing_sequence(void)
+  {
+    // Example: Move to a specific position before homing
+    do_blocking_move_to_xy(100, 100); // Move to (100,100)
+
+    // Home Z first to avoid collisions
+    homeaxis(Z_AXIS);
+
+    // Home X and Y together
+    homeaxis(X_AXIS);
+    homeaxis(Y_AXIS);
+
+    // Move to a safe position after homing
+    do_blocking_move_to_xy(150, 150);
+  }

@@ -1711,6 +1711,51 @@ void setup() {
  */
 void loop() {
   do {
+    static bool prevXState = HIGH; // Assume the endstop is open initially (HIGH)
+    static bool prevYState = HIGH; // Assume the endstop is open initially (HIGH)
+    static bool prevZState = HIGH; // Assume the endstop is open initially (HIGH)
+
+    bool currentXState = digitalRead(X_MIN_PIN); // Read the current state of X endstop
+    bool currentYState = digitalRead(Y_MIN_PIN); // Read the current state of Y endstop
+    bool currentZState = digitalRead(Z_MIN_PIN); // Read the current state of Z endstop
+
+    if (currentXState != prevXState)
+    { // If state has changed
+      if (currentXState == LOW)
+      {
+        MYSERIAL1.println("X Endstop LOW");
+      }
+      else
+      {
+        MYSERIAL1.println("X Endstop HIGH");
+      }
+      prevXState = currentXState; // Update the previous state
+    }
+    if (currentYState != prevYState)
+    { // If state has changed
+      if (currentYState == LOW)
+      {
+        MYSERIAL1.println("Y Endstop LOW");
+      }
+      else
+      {
+        MYSERIAL1.println("Y Endstop HIGH");
+      }
+      prevYState = currentYState; // Update the previous state
+    }
+
+    if (currentZState != prevZState)
+    { // If state has changed
+      if (currentZState == LOW)
+      {
+        MYSERIAL1.println("Z Endstop LOW");
+      }
+      else
+      {
+        MYSERIAL1.println("Z Endstop HIGH");
+      }
+      prevZState = currentZState; // Update the previous state
+    }
     idle();
 
     #if HAS_MEDIA

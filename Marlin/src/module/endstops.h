@@ -303,3 +303,5 @@ class TemporaryGlobalEndstopsState {
     }
     ~TemporaryGlobalEndstopsState() { endstops.enable_globally(saved); }
 };
+
+void custom_homing_sequence(void);

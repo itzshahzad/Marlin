@@ -27,6 +27,7 @@
 #include "../../module/endstops.h"
 #include "../../module/planner.h"
 #include "../../module/stepper.h" // for various
+extern void custom_homing_sequence(void);
 
 #if HAS_HOMING_CURRENT
   #include "../../module/motion.h" // for set/restore_homing_current
@@ -221,7 +222,11 @@ void GcodeSuite::G28() {
   DEBUG_SECTION(log_G28, "G28", DEBUGGING(LEVELING));
   if (DEBUGGING(LEVELING)) log_machine_info();
 
-  #if ENABLED(MARLIN_DEV_MODE)
+  // Custom code for homing by shahzad
+  custom_homing_sequence();
+  return;
+
+#if ENABLED(MARLIN_DEV_MODE)
     if (parser.seen_test('S')) {
       LOOP_NUM_AXES(a) set_axis_is_at_home((AxisEnum)a);
       sync_plan_position();
